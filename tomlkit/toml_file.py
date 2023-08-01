@@ -26,6 +26,13 @@ class TOMLFile:
         self._path = path
         self._linesep = os.linesep
 
+    def __enter__(self):
+        self._data = self.read()
+        return self._data
+
+    def __exit__(self, exception_type, exception_val, trace):
+        self.write(self._data)
+
     def read(self) -> TOMLDocument:
         """Read the file content as a :class:`tomlkit.toml_document.TOMLDocument`."""
         with open(self._path, encoding="utf-8", newline="") as f:
